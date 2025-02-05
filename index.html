@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>通知の設定</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="script.js" defer></script> <!-- JavaScriptファイル -->
+</head>
+
+<body>
+    <h1>通知の設定</h1>
+
+    <div class="content">
+        <!-- ユーザー選択セレクトボックス -->
+        <h4 for="selectUsers">[ 1 ] ユーザーを選択してください</h4><br>
+        <select id="selectUsers" class="custom-select" placeholder="ユーザーを選択">
+            <option value="user1">A子</option>
+            <option value="user2">B太朗</option>
+            <option value="user3">C花子</option>
+        </select>
+        <br>
+    </div>
+    <div class="content">
+        <!-- 通知回数選択セレクトボックス -->
+        <h4 for="noticeCount">[ 2 ] １日に通知する回数を選択してください<h4><br>
+        <select id="noticeCount" class="custom-select" onchange="updateCount()">
+            <option value="1">1 回</option>
+            <option value="2">2 回</option>
+            <option value="3">3 回</option>
+            <option value="4">4 回</option>
+            <option value="5">5 回</option>
+        </select>
+        <br>
+    </div>
+    <div class="content">
+        <!-- 通知時間選択セレクトボックス -->
+        <h4 for="time">[ 3 ] 通知時間設定</h4><br>
+        <div id="itemsContainer"></div>
+    </div>
+
+            <!-- ボタン -->
+            <div class="button-container">
+                <a href="#" class="btn-square-shadow">設定</a>
+            </div>
+    
+</body>
+
+</html>

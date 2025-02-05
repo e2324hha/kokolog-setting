@@ -1,0 +1,121 @@
+/* 基本スタイル */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+  background-color: #FFE37F;
+  color: #555;
+  max-width: 100vw; /* 画面幅を超えないように制限 */
+  overflow-x:hidden;
+}
+
+h1, .content {
+    padding: 0.2em;
+  margin-bottom: 20px;
+  max-width: 800px; /* どちらの要素も同じ幅にする */
+  width: 100%;
+  text-align: center;
+  border-radius: 8px;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box; /* 幅の計算を調整 */
+}
+h1 {
+  position: relative;
+  padding: 0.5em;
+  background-color: #fff;
+  border-radius: 8px;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+h1:after {
+  position: absolute;
+  content: '';
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%); /* 中央揃え */
+  border: 15px solid transparent;
+  border-top: 15px solid #fff; /* 吹き出しの三角部分 */
+  width: 0;
+  height: 0;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  background-color: #FFF;
+  padding: 1em; /* 文字が端にくっつかないように余白を追加 */
+  position: relative;
+  box-sizing: border-box; /* 幅の計算を調整 */
+  overflow-x: hidden;
+  min-height: 100px; /* 適度な高さを確保 */
+  transition: height 0.3s ease; /* 高さの変化をなめらかに */
+}
+
+h4 {
+  font-size: 16px;
+  color: #555;
+  text-align: left;
+  margin: 2px 0;  /* 上下の余白をさらに小さく */
+  line-height: 1.0; /* 行間をさらに詰める */
+}
+
+/* セレクトボックスのスタイル */
+.custom-select {
+  max-width: 100%;
+  min-width: 100%;
+  padding: 10px 15px;
+  margin: 10px 0; /* 上下にスペース */
+  border: 2px solid #ccc;
+  font-size: 16px;
+  background-color: #fff;
+  font-family: 'Arial', sans-serif;
+  transition: all 0.3s ease;
+}
+
+.custom-select:focus {
+  border-color: #feb66c;
+  outline: none;
+}
+
+.custom-select:hover {
+  border-color: #feb66c;
+  background-color: #f9f9f9;
+}
+
+/* ラベルのスタイル */
+label {
+  font-size: 16px;
+  color: #555;
+  text-align: left; /* 左揃え */
+  margin-bottom: 10px; /* ラベルと入力フィールドの間に少しスペース */
+  display: block; /* ラベルをブロック要素にして、幅いっぱいに表示 */
+}
+
+/* ボタンの親コンテナ */
+.button-container {
+  display: flex;
+  justify-content: center; /* 横方向中央揃え */
+  margin-top: 20px; /* ボタン上にスペースを追加 */
+}
+
+.btn-square-shadow {
+  display: block;
+  width: fit-content;
+  margin: 0 auto;
+  padding: 0.5em 1em;
+  border: none;
+  text-decoration: none;
+  background: #626262; /* ボタン色 */
+  color: #fff;
+  border-bottom: solid 4px #414141; /* 影としてのボーダー */
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-bottom-color 0.1s ease, transform 0.1s ease;
+}
+
+.btn-square-shadow:active {
+  transform: translateY(4px); /* 押された時に下に動く */
+  border-bottom-color: #626262; /* 影の色をボタンと同じにして目立たなくする */
+}

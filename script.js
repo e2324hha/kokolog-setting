@@ -1,3 +1,79 @@
+// Firebaseの初期化
+import { initializeApp } from "firebase/app";
+import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
+
+// Firebase設定
+const firebaseConfig = {
+  apiKey: "AIzaSyCoXF58jAyI5WURShsP7EPvBdMbjk7Moeg",
+  authDomain: "sample-f469e.firebaseapp.com",
+  projectId: "sample-f469e",
+  storageBucket: "sample-f469e.firebasestorage.app",
+  messagingSenderId: "26366997464",
+  appId: "1:26366997464:web:cd58cf4ea23351556978ad",
+  measurementId: "G-DQMXN8JR59"
+};
+
+// Firebaseを初期化
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// LIFFの初期化
+liff.init({ liffId: "2006651137-3dREG9Z9" })
+    .then(async () => {
+        if (!liff.isLoggedIn()) {
+            liff.login();
+        } else {
+            const profile = await liff.getProfile();
+            const userId = profile.userId; // ユーザーIDを取得
+            console.log("取得したLINE ID:", userId);
+            loadChildUsers(userId);
+        }
+    })
+    .catch(err => {
+        console.error('LIFFの初期化エラー:', err);
+    });
+
+// Firestoreから`childrens`フィールドを取得しセレクトボックスに追加
+async function loadChildUsers(userId) {
+    try {
+        const userRef = doc(db, "kokologParents", userId);
+        const userSnap = await getDoc(userRef);
+
+        if (userSnap.exists()) {
+            const userData = userSnap.data();
+            const childrens = userData.childrens || [];
+
+            console.log("取得した childrens:", childrens);
+            populateSelectBox(childrens);
+        } else {
+            console.log("該当するユーザーが見つかりません");
+        }
+    } catch (error) {
+        console.error("Firestore取得エラー:", error);
+    }
+}
+
+// `childrens` をセレクトボックス `selectUsers` に追加
+function populateSelectBox(childrens) {
+    const select = document.getElementById("selectUsers");
+    select.innerHTML = ""; // 既存データをクリア
+
+    if (childrens.length === 0) {
+        const option = document.createElement("option");
+        option.textContent = "登録されている子供はいません";
+        option.disabled = true;
+        select.appendChild(option);
+        return;
+    }
+
+    childrens.forEach(childId => {
+        const option = document.createElement("option");
+        option.value = childId;
+        option.textContent = `Child ID: ${childId}`;
+        select.appendChild(option);
+    });
+}
+
 // 通知回数に応じて通知時間の選択肢を追加
 function updateCount() {
     const noticeCount = document.getElementById("noticeCount").value;  // 選択された通知回数
@@ -46,12 +122,40 @@ function updateCount() {
     }
 }
 
-// ページが読み込まれた時に実行
-document.addEventListener("DOMContentLoaded", function () {
-    updateCount();  // 初期表示
-});
+// `noticeCount` の変更時に `itemsContainer` を更新
+document.getElementById("noticeCount").addEventListener("change", updateCount);
 
+// `selectUsers` の選択変更時に `noticeCount` をリセット
 document.getElementById("selectUsers").addEventListener("change", function() {
     document.getElementById("noticeCount").value = 1; // 通知回数を初期値に戻す
     updateCount(); // 画面を更新
+});
+
+// `saveBtn` を押すとFirestoreにデータを保存
+document.getElementById("saveBtn").addEventListener("click", async () => {
+    const userId = liff.getProfile().then(profile => profile.userId);
+    const selectedChildId = document.getElementById("selectUsers").value;
+    const inputElements = document.querySelectorAll(".custom-select");
+    let notificationTimes = [];
+
+    inputElements.forEach(input => {
+        notificationTimes.push(input.value);
+    });
+
+    if (!selectedChildId) {
+        alert("子供を選択してください！");
+        return;
+    }
+
+    try {
+        const userRef = doc(db, "kokologParents", userId);
+        await updateDoc(userRef, {
+            [`notificationTimes.${selectedChildId}`]: notificationTimes
+        });
+
+        alert("通知時間を保存しました！");
+    } catch (error) {
+        console.error("Firestore保存エラー:", error);
+        alert("保存に失敗しました。");
+    }
 });
